@@ -3,6 +3,8 @@ var hCanvas = 400
 var bgColor = '#43B047'
 var defEntityColor = '#049CD8'
 let ent
+let ply
+let map1
 
 function setup() {
   createCanvas(wCanvas, hCanvas);
@@ -10,8 +12,19 @@ function setup() {
 
 function draw() {
   background(bgColor);
-  ent = new Entity(10, 10, 10, 10)
-  ent.show()
+  ply = new Player(20, 20, 10, 10, 3, 0)
+  ply.show()
+  
+
+  map1 = new Map(wCanvas, hCanvas)
+  // map1.init()
+
+  if(keyIsPressed === true){
+    if (keyCode === RIGHT_ARROW){
+      ply.moveRight()
+    }
+    
+  }
 }
 
 class Map{
@@ -20,10 +33,11 @@ class Map{
     this.height = height
   }
   init(){
-
+    color('#049CD8')
+    rect(0, 0, this.width, this.height)
   }
 
-  move(){
+  change(){
 
   }
 }
@@ -62,7 +76,11 @@ class Entity{
   }
 
   attack(){}
-  moveRight(){}
+  moveRight(){
+    if (this.x>this.width)
+      this.x=0;
+    else
+      this.x+=10;}
   moveLeft(){}
   moveDown(){}
   moveUp(){}
@@ -81,11 +99,18 @@ class Monster extends Entity{
 }
 
 class Player extends Entity{
-  constructor(life, score){
+  constructor(w, h, x, y, life, score){
+    super(w, h, x, y)
     this.life = life
     this.score = score
   }
 
+  show(){
+    color(defEntityColor)
+    ellipse(this.x, this.y, this.w, this.h)
+    // circle(20, 20, 10, 10)
+  }
+  
   increaseScore(){
     //if y axis mentok map, score++
     this.score++
