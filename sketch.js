@@ -2,30 +2,7 @@ var wCanvas = 400
 var hCanvas = 400
 var bgColor = '#43B047'
 var defEntityColor = '#049CD8'
-let ent
-let ply
-let map1
 
-function setup() {
-  createCanvas(wCanvas, hCanvas);
-}
-
-function draw() {
-  background(bgColor);
-  ply = new Player(20, 20, 10, 10, 3, 0)
-  ply.show()
-  
-
-  map1 = new Map(wCanvas, hCanvas)
-  // map1.init()
-
-  if(keyIsPressed === true){
-    if (keyCode === RIGHT_ARROW){
-      ply.moveRight()
-    }
-    
-  }
-}
 
 class Map{
   constructor(width, height){
@@ -77,13 +54,30 @@ class Entity{
 
   attack(){}
   moveRight(){
-    if (this.x>this.width)
-      this.x=0;
+    if (this.x+this.vel>wCanvas-(this.w/2))
+      this.x=wCanvas-(this.w/2);
     else
-      this.x+=10;}
-  moveLeft(){}
-  moveDown(){}
-  moveUp(){}
+      this.x+=this.vel;
+  }
+
+  moveLeft(){
+    if (this.x-this.vel<0+(this.w/2))
+      this.x=0+(this.w/2);
+    else
+      this.x-=this.vel;
+  }
+  moveDown(){
+    if (this.y+this.vel>hCanvas-(this.h/2))
+      this.y=hCanvas-(this.h/2);
+    else
+      this.y+=this.vel;
+  }
+  moveUp(){
+    if (this.y+this.vel<0+(this.h/2))
+      this.y=0+(this.h/2);
+    else
+      this.y-=this.vel;
+  }
 }
 
 class Monster extends Entity{
@@ -122,5 +116,35 @@ class Player extends Entity{
   }
 
   saveScore(){}
+
+}
+
+var map1 = new Map(wCanvas, hCanvas)
+var player = new Player(wCanvas*.07, hCanvas*.07, 20, 20, 10, defEntityColor, 3, 0)
+
+function draw() {
+  background(bgColor);
+  player.show()
+  // fill("#8ac048");
+  // ellipse(10, 10, 10);
+  // noStroke();
+  if(keyIsPressed){
+    if(keyCode === 68){
+      player.moveRight()
+    }
+    if(keyCode === 83){
+      player.moveDown()
+    }
+    if(keyCode === 65){
+      player.moveLeft()
+    }
+    if(keyCode === 87){
+      player.moveUp()
+    }
+  }
+  
+
+  
+  // map1.init()
 
 }
