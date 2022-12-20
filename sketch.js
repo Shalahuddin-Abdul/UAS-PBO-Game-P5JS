@@ -40,17 +40,15 @@ class Level{
 }
 
 class Entity{
-  constructor(height, width, x, y){
-    this.height = height
-    this.width = width
+  constructor(h, w, x, y, vel, color){
+    this.h = h
+    this.w = w
     this.x = x
     this.y = y
+    this.vel = vel
+    this.color = color
   }
 
-  show(){
-    color(defEntityColor)
-    circle(this.x, this.y, this.width, this.height)
-  }
 
   attack(){}
   moveRight(){
@@ -100,9 +98,9 @@ class Player extends Entity{
   }
 
   show(){
-    color(defEntityColor)
-    ellipse(this.x, this.y, this.w, this.h)
-    // circle(20, 20, 10, 10)
+    fill(this.color);
+    ellipse(this.x, this.y, this.w, this.h);
+    noStroke();
   }
   
   increaseScore(){
