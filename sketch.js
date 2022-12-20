@@ -2,6 +2,7 @@ var wCanvas = 400
 var hCanvas = 400
 var bgColor = '#43B047'
 var defEntityColor = '#049CD8'
+var enemyColor = '#E52521'
 
 var gravity = 9
 var jumpHeight = 20
@@ -52,8 +53,6 @@ class Entity{
     this.color = color
   }
 
-
-  attack(){}
   moveRight(){
     if (this.x+this.vel>wCanvas-(this.w/2))
       this.x=wCanvas-(this.w/2);
@@ -79,22 +78,8 @@ class Entity{
     else
       this.y-=(this.vel/2);
   }
-}
-
-class Monster extends Entity{
-  constructor(w, h, x, y, vel, color, life, effect, type){
-    super(w, h, x, y, vel, color)
-    this.life = life
-    this.effect = effect
-    this.type = type
-  }
-
-  moveRandom(){
-    this.x += random(-3, 3);
-    this.y += random(-3, 3);
-    ellipse(this.x, this.y, 20, 20);
-  }
-  saveScore(){}
+  
+  attack(){}
 }
 
 class Player extends Entity{
@@ -132,18 +117,44 @@ class Player extends Entity{
   }
 
   saveScore(){}
+}
 
+class Monster extends Entity{
+  constructor(w, h, x, y, vel, color, life, effect, type){
+    super(w, h, x, y, vel, color)
+    this.life = life
+    this.effect = effect
+    this.type = type
+  }
+
+  moveRandom(){
+    fill(this.color)
+    rect(this.x, this.y, 20, 20);
+
+    this.x += this.vel;
+		if(this.x + (this.w/4) >= wCanvas || this.x - (this.w/4) <= 200){
+		  this.vel = -this.vel;
+	  }
+  }
+  saveScore(){}
+}
+
+
+function setup() {
+  createCanvas(wCanvas, hCanvas);
 }
 
 var map1 = new Map(wCanvas, hCanvas)
 var player = new Player(wCanvas*.07, hCanvas*.07, wCanvas*.07, hCanvas, 10, defEntityColor, 3, 0)
+var enemy = new Monster(wCanvas*.07, hCanvas*.07, wCanvas*.97, hCanvas*.95, 3, enemyColor, 1, 0, 0)
 
 function draw() {
   background(bgColor);
   player.show()
-  // fill("#8ac048");
-  // ellipse(10, 10, 10);
-  // noStroke();
+  player.update()
+  
+  enemy.moveRandom()
+  
   if(keyIsPressed){
     if(keyCode === 68){
       player.moveRight()
