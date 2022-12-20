@@ -58,26 +58,26 @@ class Entity{
     if (this.x+this.vel>wCanvas-(this.w/2))
       this.x=wCanvas-(this.w/2);
     else
-      this.x+=this.vel;
+      this.x+=(this.vel/2);
   }
 
   moveLeft(){
     if (this.x-this.vel<0+(this.w/2))
       this.x=0+(this.w/2);
     else
-      this.x-=this.vel;
+      this.x-=(this.vel/2);
   }
   moveDown(){
     if (this.y+this.vel>hCanvas-(this.h/2))
       this.y=hCanvas-(this.h/2);
     else
-      this.y+=this.vel;
+      this.y+=(this.vel/2);
   }
   moveUp(){
     if (this.y+this.vel<0+(this.h/2))
       this.y=0+(this.h/2);
     else
-      this.y-=this.vel;
+      this.y-=(this.vel/2);
   }
 }
 
