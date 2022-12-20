@@ -3,6 +3,9 @@ var hCanvas = 400
 var bgColor = '#43B047'
 var defEntityColor = '#049CD8'
 
+var gravity = 9
+var jumpHeight = 20
+
 
 class Map{
   constructor(width, height){
@@ -103,6 +106,17 @@ class Player extends Entity{
     noStroke();
   }
   
+  update(){
+    this.y += this.vel;
+    this.vel = lerp(this.vel, gravity, 0.05);
+    this.y = Math.max(this.h/2, Math.min(this.y, hCanvas-this.h/2))
+  }
+
+  jump(){
+    if(this.y>hCanvas-this.w)
+      this.vel = -jumpHeight
+  }
+  
   increaseScore(){
     //if y axis mentok map, score++
     this.score++
@@ -118,7 +132,7 @@ class Player extends Entity{
 }
 
 var map1 = new Map(wCanvas, hCanvas)
-var player = new Player(wCanvas*.07, hCanvas*.07, 20, 20, 10, defEntityColor, 3, 0)
+var player = new Player(wCanvas*.07, hCanvas*.07, wCanvas*.07, hCanvas, 10, defEntityColor, 3, 0)
 
 function draw() {
   background(bgColor);
