@@ -17,6 +17,18 @@ class Map{
     color('#049CD8')
     rect(0, 0, this.width, this.height)
   }
+	
+	gameOver(){
+    fill(0,0,0)
+    rect(0,0,wCanvas,hCanvas)
+    fill(227, 101, 91)
+    textSize(50)
+    textAlign(CENTER)
+    text("Game Over",200, 200)
+    textSize(12)
+    textAlign(CENTER)
+    text("Press 'R' to play again.",200, 250)
+  }
 
   change(){
 
@@ -148,7 +160,7 @@ class Monster extends Entity{
   saveScore(){}
 	
 	check(player){
-    return abs(player.x-this.x) < player.w + this.w
+    return abs(player.x-this.x) < this.w/4 && abs(player.y-this.y) < this.h/4
   }
 }
 
@@ -160,6 +172,8 @@ function setup() {
 var map1 = new Map(wCanvas, hCanvas)
 var player = new Player(wCanvas*.07, hCanvas*.07, wCanvas*.07, hCanvas, 10, defEntityColor, 3, 0)
 var enemy = new Monster(wCanvas*.07, hCanvas*.07, wCanvas*.97, hCanvas*.95, 3, enemyColor, 1, 0, 0)
+var enemy2 = new Monster(wCanvas*.07, hCanvas*.07, wCanvas*.8, hCanvas*.4, 3, enemyColor, 1, 0, 0)
+var enemy3 = new Monster(wCanvas*.07, hCanvas*.07, wCanvas*.8, hCanvas*.6, 3, enemyColor, 1, 0, 0)
 
 function draw() {
   background(bgColor);
