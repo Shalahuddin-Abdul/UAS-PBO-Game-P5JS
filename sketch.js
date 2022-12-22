@@ -114,6 +114,14 @@ class Player extends Entity{
   calculateLife(){
     //if die, reset ke x,y = 0 di level itu
     //if life<3 = game over
+    if(this.life>0){
+      this.life--
+    }
+    if(this.life<=0){
+      gameOver()
+    }
+    this.x = 0
+    this.y= hCanvas-10
   }
 
   saveScore(){}
@@ -126,17 +134,22 @@ class Monster extends Entity{
     this.effect = effect
     this.type = type
   }
-
-  moveRandom(){
+	show(){
     fill(this.color)
     rect(this.x, this.y, 20, 20);
-
+  }
+	
+  moveRandom(){
     this.x += this.vel;
 		if(this.x + (this.w/4) >= wCanvas || this.x - (this.w/4) <= 200){
 		  this.vel = -this.vel;
 	  }
   }
   saveScore(){}
+	
+	check(player){
+    return abs(player.x-this.x) < player.w + this.w
+  }
 }
 
 
@@ -150,11 +163,18 @@ var enemy = new Monster(wCanvas*.07, hCanvas*.07, wCanvas*.97, hCanvas*.95, 3, e
 
 function draw() {
   background(bgColor);
+
+  if (enemy.check(player)) {
+    player.calculateLife()
+  }
+  enemy.show()
+  enemy.moveRandom()
+
   player.show()
   player.update()
   
-  enemy.moveRandom()
   
+
   if(keyIsPressed){
     if(keyCode === 68){
       player.moveRight()
@@ -166,7 +186,7 @@ function draw() {
       player.moveLeft()
     }
     if(keyCode === 87){
-      player.moveUp()
+      player.jump()
     }
   }
   
@@ -174,4 +194,15 @@ function draw() {
   
   // map1.init()
 
+}
+
+function gameOver(){
+  rect(0,0,wCanvas,hCanvas)
+  fill(227, 101, 91)
+  textSize(50)
+  textAlign(CENTER)
+  text("Game Over",200, 200)
+  textSize(12)
+  textAlign(CENTER)
+  text("Press 'R' to play again.",200, 250)
 }
