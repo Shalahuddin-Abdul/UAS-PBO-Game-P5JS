@@ -97,11 +97,11 @@ class Map{
   }
   check(player){
     if(scene == 1){
-      return player.x > this.x && player.x < this.x + this.w && player.y < this.y + this.h && player.y > this.y
+      return player.x > this.x && player.x < this.x + this.w && player.y < this.y + this.h && player.y > this.y - this.h
     }else if(scene == 2){
-      return player.x > this.x+150 && player.x < this.x+150 + this.w/3 && player.y < this.y +this.h && player.y > this.y
+      return player.x > this.x+150 && player.x < this.x+150 + this.w/3 && player.y < this.y +this.h && player.y > this.y - this.h
     }else if(scene == 3){
-      return player.x > this.x && player.x < this.x + this.w/3 && player.y < this.y + 50 && player.y > this.y
+      return player.x > this.x && player.x < this.x + this.w/3 && player.y < this.y + 50 && player.y > this.y - this.h
     }
     
   }
