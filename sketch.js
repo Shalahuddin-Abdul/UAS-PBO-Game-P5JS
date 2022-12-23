@@ -13,9 +13,83 @@ class Map{
     this.width = width
     this.height = height
   }
-  init(){
-    color('#049CD8')
-    rect(0, 0, this.width, this.height)
+	init1(){
+    // image(firstScene,0,0,wCanvas,hCanvas)
+    fill(255, 255, 0);
+    textAlign(CENTER)
+    textSize(15)
+    text("Level 1", 30, 20);
+    text("Score", wCanvas*.45, 20);
+    text(player.score, wCanvas*.55, 20);
+    textSize(15)
+    text("Life", wCanvas-45, 20);
+    text(player.life, wCanvas-15, 20);
+    fill(platformColor)
+    rect(this.x, this.y, this.w, this.h)
+  }
+  	init2(){
+    // image(firstScene,0,0,wCanvas,hCanvas)
+    fill(255, 255, 0);
+    textAlign(CENTER)
+    textSize(15)
+    text("Level 2", 30, 20);
+    text("Score", wCanvas*.45, 20);
+    text(player.score, wCanvas*.55, 20);
+    textSize(15)
+    text("Life", wCanvas-45, 20);
+    text(player.life, wCanvas-15, 20);
+    fill(platformColor)
+    rect(this.x+150, this.y, this.w/3, this.h)
+  }
+  	init3(){
+    // image(firstScene,0,0,wCanvas,hCanvas)
+    fill(255, 255, 0);
+    textAlign(CENTER)
+    textSize(15)
+    text("Level 3", 30, 20);
+    text("Score", wCanvas*.45, 20);
+    text(player.score, wCanvas*.55, 20);
+    textSize(15)
+    text("Life", wCanvas-45, 20);
+    text(player.life, wCanvas-15, 20);
+    fill(platformColor)
+    rect(this.x, this.y, this.w/3, this.h)
+ 
+	gameFinish(){
+    fill(255,255,255)
+    rect(0,0,wCanvas,hCanvas)
+    fill(227, 101, 91)
+    textSize(50)
+    textAlign(CENTER)
+    text("Finish",200, 200)
+    textSize(12)
+    textAlign(CENTER)
+    text("'R' untuk mengulang.",200, 250)
+    text("Score anda",190, 300)
+    text(player.score,230, 300)
+  }
+	change(){
+    if (scene == 1 && player.life >0){
+      scene = 2
+      player.x = wCanvas*.07
+      player.y = hCanvas
+    }else if(scene == 2 && player.life >0){
+      scene = 3
+    }else if(scene = 3 && player.life > 0){
+      scene = 100
+    }
+    player.x = wCanvas*.07
+    player.y = hCanvas
+  }
+  check(player){
+    if(scene == 1){
+      return player.x > this.x && player.x < this.x + this.w && player.y < this.y + this.h && player.y > this.y
+    }else if(scene == 2){
+      return player.x > this.x+150 && player.x < this.x+150 + this.w/3 && player.y < this.y +this.h && player.y > this.y
+    }else if(scene == 3){
+      return player.x > this.x && player.x < this.x + this.w/3 && player.y < this.y + 50 && player.y > this.y
+    }
+    
   }
 	
 	gameOver(){
