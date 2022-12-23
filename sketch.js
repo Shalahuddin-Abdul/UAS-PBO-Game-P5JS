@@ -15,6 +15,12 @@ let firstScene
 let secondScene
 let thirdScene
 
+function preload(){
+  firstScene = loadImage('scene1.jpeg')
+  secondScene = loadImage('scene2.jpeg')
+  thirdScene = loadImage('scene3.jpeg')
+}
+
 class Map{
   constructor(x, y, w, h){
     this.x = x
@@ -23,7 +29,7 @@ class Map{
     this.h = h
   }
 	init1(){
-    // image(firstScene,0,0,wCanvas,hCanvas)
+    image(firstScene,0,0,wCanvas,hCanvas)
     fill(255, 255, 0);
     textAlign(CENTER)
     textSize(15)
@@ -37,7 +43,7 @@ class Map{
     rect(this.x, this.y, this.w, this.h)
   }
   init2(){
-    // image(firstScene,0,0,wCanvas,hCanvas)
+    image(firstScene,0,0,wCanvas,hCanvas)
     fill(255, 255, 0);
     textAlign(CENTER)
     textSize(15)
@@ -51,7 +57,7 @@ class Map{
     rect(this.x+150, this.y, this.w/3, this.h)
   }
   init3(){
-    // image(firstScene,0,0,wCanvas,hCanvas)
+    image(firstScene,0,0,wCanvas,hCanvas)
     fill(255, 255, 0);
     textAlign(CENTER)
     textSize(15)
@@ -261,32 +267,32 @@ function draw() {
   background(bgColor);
 
   if(scene == 1 && player.life > 0){
-    player.show()
-    player.update()
     map1.init1()
     if (enemy.check(player)) {
       player.calculateLife()
     }
+    player.show()
+    player.update()
     enemy.show()
     enemy.moveRandom()
   }
   if(scene == 2 && player.life > 0){
-    player.show()
-    player.update()
     map1.init2()
-    enemy2.show()
-    enemy2.moveRandom()
     if (enemy2.check(player)) {
       player.calculateLife()
     }
-  }
-  if(scene == 3 && player.life > 0){
     player.show()
     player.update()
+    enemy2.show()
+    enemy2.moveRandom()
+  }
+  if(scene == 3 && player.life > 0){
     map1.init3()
     if (enemy3.check(player)) {
       player.calculateLife()
     }
+    player.show()
+    player.update()
     enemy3.show()
     enemy3.moveRandom()
   }
