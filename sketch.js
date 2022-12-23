@@ -43,7 +43,7 @@ class Map{
     rect(this.x, this.y, this.w, this.h)
   }
   init2(){
-    image(firstScene,0,0,wCanvas,hCanvas)
+    image(secondScene,0,0,wCanvas,hCanvas)
     fill(255, 255, 0);
     textAlign(CENTER)
     textSize(15)
@@ -57,7 +57,7 @@ class Map{
     rect(this.x+150, this.y, this.w/3, this.h)
   }
   init3(){
-    image(firstScene,0,0,wCanvas,hCanvas)
+    image(thirdScene,0,0,wCanvas,hCanvas)
     fill(255, 255, 0);
     textAlign(CENTER)
     textSize(15)
@@ -188,7 +188,6 @@ class Player extends Entity{
   show(){
     fill(this.color);
     ellipse(this.x, this.y, this.w, this.h);
-    noStroke();
   }
   
   update(){
