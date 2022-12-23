@@ -3,15 +3,24 @@ var hCanvas = 400
 var bgColor = '#43B047'
 var defEntityColor = '#049CD8'
 var enemyColor = '#E52521'
+var platformColor = '#d8973c'
 
 var gravity = 9
 var jumpHeight = 20
 
+//new scenes
+let scene
+
+let firstScene
+let secondScene
+let thirdScene
 
 class Map{
-  constructor(width, height){
-    this.width = width
-    this.height = height
+  constructor(x, y, w, h){
+    this.x = x
+    this.y = y
+    this.w = w
+    this.h = h
   }
 	init1(){
     // image(firstScene,0,0,wCanvas,hCanvas)
@@ -27,7 +36,7 @@ class Map{
     fill(platformColor)
     rect(this.x, this.y, this.w, this.h)
   }
-  	init2(){
+  init2(){
     // image(firstScene,0,0,wCanvas,hCanvas)
     fill(255, 255, 0);
     textAlign(CENTER)
@@ -41,7 +50,7 @@ class Map{
     fill(platformColor)
     rect(this.x+150, this.y, this.w/3, this.h)
   }
-  	init3(){
+  init3(){
     // image(firstScene,0,0,wCanvas,hCanvas)
     fill(255, 255, 0);
     textAlign(CENTER)
@@ -54,7 +63,6 @@ class Map{
     text(player.life, wCanvas-15, 20);
     fill(platformColor)
     rect(this.x, this.y, this.w/3, this.h)
- 
 	gameFinish(){
     fill(255,255,255)
     rect(0,0,wCanvas,hCanvas)
@@ -91,7 +99,6 @@ class Map{
     }
     
   }
-	
 	gameOver(){
     fill(0,0,0)
     rect(0,0,wCanvas,hCanvas)
@@ -103,10 +110,6 @@ class Map{
     textAlign(CENTER)
     text("Press 'R' to play again.",200, 250)
   }
-
-  change(){
-
-  }
 }
 
 class Level{
@@ -117,11 +120,7 @@ class Level{
   }
 
   setLevel(){
-    if (this.currentLevel<this.latestLevel){
-      this.currentLevel++
-    }else if (this.currentLevel>this.latestLevel){
-      this.currentLevel = this.latestLevel
-    }
+    this.currentLevel++
   }
 
   getCurrentLevel(){
@@ -140,10 +139,15 @@ class Entity{
   }
 
   moveRight(){
-    if (this.x+this.vel>wCanvas-(this.w/2))
-      this.x=wCanvas-(this.w/2);
-    else
-      this.x+=(this.vel/2);
+    if (this.x+this.vel>wCanvas+10){
+      // this.x=wCanvas-(this.w/2);
+      map1.change()
+      player.increaseScore()
+      level.setLevel()
+    }
+    else{
+      this.x+=this.vel/2;
+    }
   }
 
   moveLeft(){
@@ -184,7 +188,11 @@ class Player extends Entity{
   update(){
     this.y += this.vel;
     this.vel = lerp(this.vel, gravity, 0.05);
-    this.y = Math.max(this.h/2, Math.min(this.y, hCanvas-this.h/2))
+    if(map1.check(player)){
+      this.y = map1.y-10
+    }else{
+      this.y = Math.max(this.h/2, Math.min(this.y, hCanvas-this.h/2))
+    }
   }
 
   jump(){
@@ -194,7 +202,7 @@ class Player extends Entity{
   
   increaseScore(){
     //if y axis mentok map, score++
-    this.score++
+    this.score+=10
   }
 
   calculateLife(){
@@ -210,7 +218,6 @@ class Player extends Entity{
     this.y= hCanvas-10
   }
 
-  saveScore(){}
 }
 
 class Monster extends Entity{
@@ -231,7 +238,6 @@ class Monster extends Entity{
 		  this.vel = -this.vel;
 	  }
   }
-  saveScore(){}
 	
 	check(player){
     return abs(player.x-this.x) < this.w/4 && abs(player.y-this.y) < this.h/4
@@ -241,27 +247,69 @@ class Monster extends Entity{
 
 function setup() {
   createCanvas(wCanvas, hCanvas);
+	scene = 1
 }
 
-var map1 = new Map(wCanvas, hCanvas)
+var level = new Level(1, 1, 3)
+var map1 = new Map(wCanvas*.4, hCanvas*.7, wCanvas*.6, 20)
 var player = new Player(wCanvas*.07, hCanvas*.07, wCanvas*.07, hCanvas, 10, defEntityColor, 3, 0)
-var enemy = new Monster(wCanvas*.07, hCanvas*.07, wCanvas*.97, hCanvas*.95, 3, enemyColor, 1, 0, 0)
+var enemy = new Monster(wCanvas*.07, hCanvas*.07, wCanvas*.95, hCanvas*.95, 3, enemyColor, 1, 0, 0)
 var enemy2 = new Monster(wCanvas*.07, hCanvas*.07, wCanvas*.8, hCanvas*.4, 3, enemyColor, 1, 0, 0)
-var enemy3 = new Monster(wCanvas*.07, hCanvas*.07, wCanvas*.8, hCanvas*.6, 3, enemyColor, 1, 0, 0)
+var enemy3 = new Monster(wCanvas*.07, hCanvas*.07, wCanvas*.9, hCanvas*.6, 3, enemyColor, 1, 0, 0)
 
 function draw() {
   background(bgColor);
 
-  if (enemy.check(player)) {
-    player.calculateLife()
+  if(scene == 1 && player.life > 0){
+    player.show()
+    player.update()
+    map1.init1()
+    if (enemy.check(player)) {
+      player.calculateLife()
+    }
+    enemy.show()
+    enemy.moveRandom()
   }
-  enemy.show()
-  enemy.moveRandom()
+  if(scene == 2 && player.life > 0){
+    player.show()
+    player.update()
+    map1.init2()
+    enemy2.show()
+    enemy2.moveRandom()
+    if (enemy2.check(player)) {
+      player.calculateLife()
+    }
+  }
+  if(scene == 3 && player.life > 0){
+    player.show()
+    player.update()
+    map1.init3()
+    if (enemy3.check(player)) {
+      player.calculateLife()
+    }
+    enemy3.show()
+    enemy3.moveRandom()
+  }
 
-  player.show()
-  player.update()
-  
-  
+  if(scene == 99 && player.life <= 0){
+    map1.gameOver()
+    
+    if(keyIsPressed){
+      if(keyCode == 82){
+        window.location.reload()
+      }
+    }
+  }
+
+  if(scene == 100 && player.life > 0){
+    map1.gameFinish()
+    
+    if(keyIsPressed){
+      if(keyCode == 82){
+        window.location.reload()
+      }
+    }
+  }
 
   if(keyIsPressed){
     if(keyCode === 68){
@@ -277,20 +325,6 @@ function draw() {
       player.jump()
     }
   }
-  
-
-  
-  // map1.init()
-
 }
 
-function gameOver(){
-  rect(0,0,wCanvas,hCanvas)
-  fill(227, 101, 91)
-  textSize(50)
-  textAlign(CENTER)
-  text("Game Over",200, 200)
-  textSize(12)
-  textAlign(CENTER)
-  text("Press 'R' to play again.",200, 250)
-}
+
